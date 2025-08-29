@@ -304,7 +304,12 @@ select[multiple]{height:100px}
   <div id="portal" class="card hidden"><h3>Stakeholder Portal</h3><div id="portalContent"></div></div>
 
   <div id="api" class="card hidden"><h3>API Library — Payments, Regulators, GRA, Verification, Ghana.gov, Webhooks, Analytics</h3>
-  
+   <div class="row">
+      <div class="grow"><div class="label">Search</div><input id="apiSearch" class="input" placeholder="e.g., momo, settlements, verify"></div>
+      <div class="grow"><div class="label">Category</div><select id="apiCat" class="input"><option value="">(all)</option><option>Payments</option><option>Regulators</option><option>GRA</option><option>Verification</option><option>Ghana.gov</option><option>Webhooks</option><option>Analytics</option></select></div>
+      <div class="grow"><div class="label">Auth</div><select id="apiAuth" class="input"><option value="">(any)</option><option>OAuth2</option><option>mTLS</option><option>API Key</option><option>HMAC</option></select></div>
+      <div class="grow" style="align-self:end"><button class="btn secondary" onclick="renderAPI()">Apply</button><button class="btn vio" style="margin-left:10px;" onclick="genClient()">Generate Client SDK</button></div>
+    </div>
     <div id="apiGrid" class="grid api" style="margin-top:12px"></div>
   </div>
 
@@ -321,12 +326,7 @@ select[multiple]{height:100px}
   </div>
 
   <div id="audit" class="card hidden"><h3>Audit Logs</h3><table class="table" id="auditTable"><thead><tr><th>ID</th><th>Actor</th><th>Action</th><th>Target</th><th>Info</th><th>Created</th></tr></thead><tbody></tbody></table></div>
-  <div class="row">
-      <div class="grow"><div class="label">Search</div><input id="apiSearch" class="input" placeholder="e.g., momo, settlements, verify"></div>
-      <div class="grow"><div class="label">Category</div><select id="apiCat" class="input"><option value="">(all)</option><option>Payments</option><option>Regulators</option><option>GRA</option><option>Verification</option><option>Ghana.gov</option><option>Webhooks</option><option>Analytics</option></select></div>
-      <div class="grow"><div class="label">Auth</div><select id="apiAuth" class="input"><option value="">(any)</option><option>OAuth2</option><option>mTLS</option><option>API Key</option><option>HMAC</option></select></div>
-      <div class="grow" style="align-self:end"><button class="btn secondary" onclick="renderAPI()">Apply</button><button class="btn vio" style="margin-left:10px;" onclick="genClient()">Generate Client SDK</button></div>
-    </div>
+ 
   <div class="footer">Orion Edition — demo only. powered by Access Link 
 Adomi Group 
 <img src="access_logo.png" alt="Access Link logo" style="height:25px; vertical-align:middle;">
