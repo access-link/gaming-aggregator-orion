@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gaming Aggregator — Orion Edition</title>
+<script>
+    // block access if not logged in
+    if(localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
 <style>
 :root{
   --bg:#0E4B53; --card:#0E4B53; --muted:#94a3b8; --text:#e5e7eb; --accent:#4CB818; --danger:#ef4444; --line:#1f2937; --warn:#f59e0b; --info:#38bdf8; --vio:#a78bfa; --ok:#10b981;
