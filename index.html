@@ -53,13 +53,41 @@ select[multiple]{height:100px}
 .mini-bar{height:8px;background:#123a40;border:1px solid #123a40;border-radius:8px;overflow:hidden}
 .mini-bar>div{height:100%;background:var(--info)}
 .section{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+
+  .nav {
+    display: flex;
+    background: #123a40; /* same green as your example */
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .nav-item {
+    flex: 1;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 8px 0;
+  }
+
+  .nav-item img {
+    display: block;
+    margin: 0 auto 5px auto;
+    width: 22px;
+    height: 22px;
+  }
+
+  .nav-item:hover {
+    background: var(--card);
+    border-radius: 8px;
+  }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="header">
     <div class="h1">Gaming Aggregator — <span style="color:#93c5fd">Orion Edition</span></div>
-    <div class="nav" style="gap:6px;align-items:center">
+    <div class="" style="gap:6px;align-items:center">
       <span id="who" class="badge" style="
     
     border-radius: 10px;
@@ -78,8 +106,8 @@ select[multiple]{height:100px}
     </div>
   </div>
 
-  <div class="nav" id="tabs">
-    <button class="btn secondary" onclick="tab('dash')">Dashboard</button>
+ <!--<div class="nav" id="tabs">
+    <button class="btn secondary" onclick="tab('dash')"><img width="18" height="18" src="https://img.icons8.com/ios-glyphs/30/FFFFFF/dashboard.png" alt="dashboard"/>Dashboard</button>
     <button class="btn secondary" onclick="tab('operators')">Operators</button>
     <button class="btn secondary" onclick="tab('psp')">PSPs</button>
     <button class="btn secondary" onclick="tab('guin')">GUIN / GRA Connector</button>
@@ -93,7 +121,83 @@ select[multiple]{height:100px}
     <button class="btn secondary" onclick="tab('reports')">Reports</button>
     <button class="btn secondary" onclick="tab('settings')">Settings</button>
     <button class="btn secondary" onclick="tab('audit')">Audit</button>
+  </div>-->
+
+
+
+<div class="nav" id="tabs">
+  <div class="nav-item" onclick="tab('dash')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/dashboard.png" alt="Dashboard"/>
+    <span>Dashboard</span>
   </div>
+
+  <div class="nav-item" onclick="tab('operators')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/conference.png" alt="Operators"/>
+    <span>Operators</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('psp')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/bank.png" alt="PSPs"/>
+    <span>PSPs</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('guin')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/network.png" alt="GUIN"/>
+    <span>GUIN / GRA Connector</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('tx')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/money-transfer.png" alt="Transactions"/>
+    <span>Transactions</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('tax')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/tax.png" alt="Tax Bills"/>
+    <span>Tax Bills</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('settle')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/money-bag.png" alt="Settlements"/>
+    <span>Settlements</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('fund')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/donation.png" alt="Consolidated Fund"/>
+    <span>Consolidated Fund</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('recon')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/ledger.png" alt="Reconciliation"/>
+    <span>Reconciliation</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('portal')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/internet.png" alt="Portal"/>
+    <span>Stakeholder Portal</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('api')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/api.png" alt="API"/>
+    <span>API Library (100+)</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('reports')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/combo-chart.png" alt="Reports"/>
+    <span>Reports</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('settings')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/settings.png" alt="Settings"/>
+    <span>Settings</span>
+  </div>
+
+  <div class="nav-item" onclick="tab('audit')">
+    <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/inspection.png" alt="Audit"/>
+    <span>Audit</span>
+  </div>
+</div>
+
+
 
   <div id="dash" class="card"><h3>Executive Dashboard</h3><div class="kpi" id="kpi"></div>
     <div class="section">
