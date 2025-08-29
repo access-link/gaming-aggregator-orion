@@ -305,10 +305,10 @@ select[multiple]{height:100px}
 
   <div id="api" class="card hidden"><h3>API Library — Payments, Regulators, GRA, Verification, Ghana.gov, Webhooks, Analytics</h3>
    <div class="row">
-      <div class="grow"><div class="label">Search</div><input id="apiSearch" class="input" placeholder="e.g., momo, settlements, verify"></div>
-      <div class="grow"><div class="label">Category</div><select id="apiCat" class="input"><option value="">(all)</option><option>Payments</option><option>Regulators</option><option>GRA</option><option>Verification</option><option>Ghana.gov</option><option>Webhooks</option><option>Analytics</option></select></div>
-      <div class="grow"><div class="label">Auth</div><select id="apiAuth" class="input"><option value="">(any)</option><option>OAuth2</option><option>mTLS</option><option>API Key</option><option>HMAC</option></select></div>
-      <div class="grow" style="align-self:end"><button class="btn secondary" onclick="renderAPI()">Apply</button><button class="btn vio" style="margin-left:10px;" onclick="genClient()">Generate Client SDK</button></div>
+      <div class=""><div class="label">Search</div><input id="apiSearch" class="input" placeholder="e.g., momo, settlements, verify"></div>
+      <div class=""><div class="label">Category</div><select id="apiCat" class="input"><option value="">(all)</option><option>Payments</option><option>Regulators</option><option>GRA</option><option>Verification</option><option>Ghana.gov</option><option>Webhooks</option><option>Analytics</option></select></div>
+      <div class=""><div class="label">Auth</div><select id="apiAuth" class="input"><option value="">(any)</option><option>OAuth2</option><option>mTLS</option><option>API Key</option><option>HMAC</option></select></div>
+      <div class="" style="align-self:end"><button class="btn secondary" onclick="renderAPI()">Apply</button><button class="btn vio" style="margin-left:10px;" onclick="genClient()">Generate Client SDK</button></div>
     </div>
     <div id="apiGrid" class="grid api" style="margin-top:12px"></div>
   </div>
@@ -1447,7 +1447,7 @@ function renderAPI(){
 
       <div style="margin-top:6px">
          <span class="tag">Path: ${a.path}</span>
-          <button class="btn secondary" style="float:right" onclick="copyText(\`${a.sample.replace(/`/g,'\\`')}\`)">Copy Sample</button>
+          <button class="btn secondary" style="float:right;margin-top:10px;background:var(--card);" onclick="copyText(\`${a.sample.replace(/`/g,'\\`')}\`)">Copy Sample</button>
       </div>
     `;
     grid.appendChild(div);
