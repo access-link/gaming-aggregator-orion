@@ -25,7 +25,10 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui
 textarea{min-height:90px}
 .label{font-size:12px;color:var(--muted)}
 .row{display:flex;gap:10px;flex-wrap:wrap}
-.grow{flex:1 1 240px}
+.grow{
+ flex: auto;            /* distribute evenly */
+  min-width: 0;       /* prevent overflowing */
+}
 .table{width:100%;border-collapse:collapse;margin-top:10px}
 .table th,.table td{border-bottom:1px solid #123a40;padding:8px 10px;text-align:left;font-size:14px}
 .kpi{display:grid;grid-template-columns:repeat(6,minmax(200px,1fr));gap:12px}
@@ -86,7 +89,7 @@ select[multiple]{height:100px}
 <body>
 <div class="container">
   <div class="header">
-    <div class="h1">Gaming Aggregator — <span style="color:#93c5fd">Orion Edition</span></div>
+    <div class="h1"><img src="access_logo.png" alt="Access Link logo" style="height:45px;vertical-align:middle;">Gaming Aggregator — <span style="color:#93c5fd">Orion Edition</span></div>
     <div class="" style="gap:6px;align-items:center">
       <span id="who" class="badge" style="
     
@@ -166,12 +169,12 @@ select[multiple]{height:100px}
     <span>Consolidated Fund</span>
   </div>
 
-  <div class="nav-item" onclick="tab('recon')">
+  <div class="nav-item" onclick="tab('recon')" >
     <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/ledger.png" alt="Reconciliation"/>
     <span>Reconciliation</span>
   </div>
 
-  <div class="nav-item" onclick="tab('portal')">
+  <div id="portalNav" class="nav-item" onclick="tab('portal')" style="display:none">
     <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/internet.png" alt="Portal"/>
     <span>Stakeholder Portal</span>
   </div>
@@ -220,36 +223,42 @@ select[multiple]{height:100px}
 
   <div id="operators" class="card hidden"><h3>Operators</h3>
     <div class="row">
-      <div class="grow"><div class="label">New Operator Name</div><input id="opName" class="input" placeholder="e.g., Premier Gaming Ltd"></div>
-      <div class="grow"><div class="label">TIN</div><input id="opTin" class="input" placeholder="e.g., P1234567890"></div>
-      <div class="grow"><div class="label">License Status</div><select id="opLicense" class="input"><option value="valid">valid</option><option value="suspended">suspended</option></select></div>
-      <div class="grow"><div class="label">License Expiry</div><input id="opExpiry" class="input" placeholder="YYYY-MM-DD"></div>
-      <div class="grow" style="align-self:end"><button class="btn" onclick="createOperator()">Create</button></div>
-    </div>
-    <div class="row">
-      <div class="grow"><div class="label">Compliance Docs</div><textarea id="opDocs" class="input" placeholder="e.g., Cert of Inc., Tax Clearance, AML/KYC policy"></textarea></div>
-      <div class="grow"><div class="label">Primary Contact</div><input id="opContact" class="input" placeholder="name + email + phone"><div class="label" style="margin-top:8px">KYC Level</div><select id="opKyc" class="input"><option>Standard</option><option>Enhanced</option></select></div>
-    </div>
+  <div class="grow"><div class="label">New Operator Name</div><input id="opName" class="input" placeholder="e.g., Premier Gaming Ltd"></div>
+  <div class="grow"><div class="label">TIN</div><input id="opTin" class="input" placeholder="e.g., P1234567890"></div>
+  <div class="grow"><div class="label">License Status</div><select id="opLicense" class="input"><option value="valid">valid</option><option value="suspended">suspended</option></select></div>
+  <div class="grow"><div class="label">License Expiry</div><input id="opExpiry" class="input" placeholder="YYYY-MM-DD"></div>
+  
+  <div class="grow"><div class="label">Compliance Docs</div><textarea id="opDocs" class="input" placeholder="e.g., Cert of Inc., Tax Clearance, AML/KYC policy"></textarea></div>
+  <div class="grow"><div class="label">Primary Contact</div><input id="opContact" class="input" placeholder="name + email + phone"></div>
+  <div class="grow"><div class="label">KYC Level</div><select id="opKyc" class="input"><option>Standard</option><option>Enhanced</option></select></div>
+  <div class="grow"><div class="label">Create</div><button class="btn" onclick="createOperator()">Create</button></div>
+</div>
+
+
     <table class="table" id="opTable"><thead><tr><th>ID</th><th>Name</th><th>TIN</th><th>API Key</th><th>License</th><th>Expiry</th><th>SLA (30d)</th><th>PSP</th><th>Tax Pending</th><th>Tax Paid</th><th>Risk</th></tr></thead><tbody></tbody></table>
   </div>
 
   <div id="psp" class="card hidden"><h3>Payment Service Providers (PSP) — Onboarding</h3>
     <div class="row">
-      <div class="grow"><div class="label">PSP Name</div><input id="pspName" class="input" placeholder="e.g., AdomiPay, FinSwitch, MoMoHub"></div>
-      <div class="grow"><div class="label">Switch / BIN</div><input id="pspSwitch" class="input" placeholder="e.g., GH-SWITCH-01 or 5360-54xx"></div>
-      <div class="grow"><div class="label">SLA Target</div><input id="pspSla" class="input" placeholder="99.90%"></div>
-      <div class="grow"><div class="label">Status</div><select id="pspStatus" class="input"><option>pending</option><option>certification</option><option>active</option><option>suspended</option></select></div>
-      <div class="grow" style="align-self:end"><button class="btn" onclick="createPSP()">Add PSP</button></div>
-    </div>
-    <div class="row">
-      <div class="grow"><div class="label">Compliance Docs</div><textarea id="pspDocs" class="input" placeholder="PCI AoC, ISO 27001, DR Runbook, Fraud Policy"></textarea></div>
-      <div class="grow"><div class="label">Technical Contact</div><input id="pspContact" class="input" placeholder="name + email + phone"></div>
-    </div>
-    <div class="row">
-      <div class="grow"><div class="label">Map Operators to PSP</div><select id="pspMapOp" class="input"></select></div>
-      <div class="grow"><div class="label">Select PSP</div><select id="pspMap" class="input"></select></div>
-      <div class="grow" style="align-self:end"><button class="btn warn" onclick="assignPSP()">Assign PSP to Operator</button></div>
-    </div>
+  <div class="grow"><div class="label">PSP Name</div><input id="pspName" class="input" placeholder="e.g., AdomiPay, FinSwitch, MoMoHub"></div>
+  <div class="grow"><div class="label">Switch / BIN</div><input id="pspSwitch" class="input" placeholder="e.g., GH-SWITCH-01 or 5360-54xx"></div>
+  <div class="grow"><div class="label">SLA Target</div><input id="pspSla" class="input" placeholder="99.90%"></div>
+  <div class="grow"><div class="label">Status</div><select id="pspStatus" class="input"><option>pending</option><option>certification</option><option>active</option><option>suspended</option></select></div>
+  <div class="grow"><div class="label">Compliance Docs</div><textarea id="pspDocs" class="input" placeholder="PCI AoC, ISO 27001, DR Runbook, Fraud Policy"></textarea></div>
+  <div class="grow"><div class="label">Technical Contact</div><input id="pspContact" class="input" placeholder="name + email + phone"></div>
+  <div class="grow"><div class="label">Map Operators to PSP</div><select id="pspMapOp" class="input"></select></div>
+
+ 
+</div>
+<div class="row">
+  <div class="grow" style="margin-left:auto">
+    <div class="label">Select PSP</div>
+    <select id="pspMap" class="input"></select>
+  </div>
+  <div><button class="btn" onclick="createPSP()">Add PSP</button></div>
+  <div><button class="btn warn" onclick="assignPSP()">Assign PSP to Operator</button></div>
+</div>
+
     <table class="table" id="pspTable"><thead><tr><th>ID</th><th>Name</th><th>Switch/BIN</th><th>SLA Target</th><th>Status</th><th>Operators</th></tr></thead><tbody></tbody></table>
   </div>
 
@@ -264,9 +273,9 @@ select[multiple]{height:100px}
 
   <div id="tx" class="card hidden"><h3>Transactions</h3>
     <div class="row">
-      <div class="grow"><div class="label">Operator (by ID)</div><input id="txFilterOp" class="input" placeholder="blank = all"></div>
-      <div class="grow"><div class="label">Type</div><select id="txFilterType" class="input"><option value="">(any)</option><option>WALLET_TOPUP</option><option>STAKE</option><option>PAYOUT</option><option>OTHER</option></select></div>
-      <div class="grow" style="align-self:end"><button class="btn secondary" onclick="renderTx()">Apply Filters</button></div>
+      <div class=""><div class="label">Operator (by ID)</div><input id="txFilterOp" class="input" placeholder="blank = all"></div>
+      <div class=""><div class="label">Type</div><select id="txFilterType" class="input"><option value="">(any)</option><option>WALLET_TOPUP</option><option>STAKE</option><option>PAYOUT</option><option>OTHER</option></select></div>
+      <div class="" style="align-self:end"><button class="btn secondary" onclick="renderTx()">Apply Filters</button></div>
     </div>
     <table class="table" id="txTable"><thead><tr><th>ID</th><th>Op</th><th>Type</th><th>Amount</th><th>Betting?</th><th>Status</th><th>Created</th></tr></thead><tbody></tbody></table>
   </div>
@@ -295,12 +304,7 @@ select[multiple]{height:100px}
   <div id="portal" class="card hidden"><h3>Stakeholder Portal</h3><div id="portalContent"></div></div>
 
   <div id="api" class="card hidden"><h3>API Library — Payments, Regulators, GRA, Verification, Ghana.gov, Webhooks, Analytics</h3>
-    <div class="row">
-      <div class="grow"><div class="label">Search</div><input id="apiSearch" class="input" placeholder="e.g., momo, settlements, verify"></div>
-      <div class="grow"><div class="label">Category</div><select id="apiCat" class="input"><option value="">(all)</option><option>Payments</option><option>Regulators</option><option>GRA</option><option>Verification</option><option>Ghana.gov</option><option>Webhooks</option><option>Analytics</option></select></div>
-      <div class="grow"><div class="label">Auth</div><select id="apiAuth" class="input"><option value="">(any)</option><option>OAuth2</option><option>mTLS</option><option>API Key</option><option>HMAC</option></select></div>
-      <div class="grow" style="align-self:end"><button class="btn secondary" onclick="renderAPI()">Apply</button><button class="btn vio" style="margin-left:10px;" onclick="genClient()">Generate Client SDK</button></div>
-    </div>
+  
     <div id="apiGrid" class="grid api" style="margin-top:12px"></div>
   </div>
 
@@ -317,9 +321,15 @@ select[multiple]{height:100px}
   </div>
 
   <div id="audit" class="card hidden"><h3>Audit Logs</h3><table class="table" id="auditTable"><thead><tr><th>ID</th><th>Actor</th><th>Action</th><th>Target</th><th>Info</th><th>Created</th></tr></thead><tbody></tbody></table></div>
-
+  <div class="row">
+      <div class="grow"><div class="label">Search</div><input id="apiSearch" class="input" placeholder="e.g., momo, settlements, verify"></div>
+      <div class="grow"><div class="label">Category</div><select id="apiCat" class="input"><option value="">(all)</option><option>Payments</option><option>Regulators</option><option>GRA</option><option>Verification</option><option>Ghana.gov</option><option>Webhooks</option><option>Analytics</option></select></div>
+      <div class="grow"><div class="label">Auth</div><select id="apiAuth" class="input"><option value="">(any)</option><option>OAuth2</option><option>mTLS</option><option>API Key</option><option>HMAC</option></select></div>
+      <div class="grow" style="align-self:end"><button class="btn secondary" onclick="renderAPI()">Apply</button><button class="btn vio" style="margin-left:10px;" onclick="genClient()">Generate Client SDK</button></div>
+    </div>
   <div class="footer">Orion Edition — demo only. powered by Access Link 
-Adomi Group</div>
+Adomi Group 
+<img src="access_logo.png" alt="Access Link logo" style="height:25px; vertical-align:middle;">
 </div>
 
 <script>
@@ -432,6 +442,15 @@ function populateRoleControls(){
 function switchPersona(){
   persona.role=document.getElementById("roleSel").value;
   persona.opId=parseInt(document.getElementById("opSel").value||state.operators[0]?.id||1,10);
+  
+  // hide/show reconciliation tab depending on role
+    const portalNav = document.getElementById("portalNav");
+    if(persona.role === "ADMIN" || persona.role === "GAMING_COMMISSION"){
+      portalNav.style.display = "none";
+    } else {
+      portalNav.style.display = "block";
+    }
+
   populateRoleControls(); refreshAll();
 }
 function tab(id){
@@ -446,7 +465,7 @@ function tab(id){
   if(id==="fund") renderFund();
   if(id==="recon") renderRecon();
   if(id==="portal") renderPortal();
-  if(id==="api") renderAPI();
+ // if(id==="api") renderAPI();
   if(id==="reports") renderReports();
   if(id==="settings") loadSettings();
   if(id==="audit") renderAudit();
@@ -504,33 +523,475 @@ function riskFor(opId){
   let score=0; if(unplayedPct>30) score+=2; else if(unplayedPct>15) score+=1; if(ratio<0.5||ratio>1.5) score+=1; if(declinePct>10) score+=1;
   return {unplayedPct,ratio,declinePct,score};
 }
-function renderOperators(){
-  const tb=document.querySelector("#opTable tbody"); tb.innerHTML="";
-  let ops = state.operators;
-  if(persona.role==="OPERATOR"){ ops = ops.filter(o=>o.id===persona.opId); }
-  ops.forEach(op=>{
-    const agg=opAgg(op.id);
-    const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${op.id}</td><td>${op.name}<div class="label">${op.contact||''}</div></td><td>${op.tin}</td><td>${op.api_key}</td><td>${op.license}</td><td>${op.expiry}</td><td>${op.sla}</td><td>${agg.pspName}</td><td>${agg.pending.toFixed(2)}</td><td>${agg.paid.toFixed(2)}</td><td>${agg.risk}</td>`;
+// function renderOperators(){
+//   const tb=document.querySelector("#opTable tbody"); tb.innerHTML="";
+//   let ops = state.operators;
+//   if(persona.role==="OPERATOR"){ ops = ops.filter(o=>o.id===persona.opId); }
+//   ops.forEach(op=>{
+//     const agg=opAgg(op.id);
+//     const tr=document.createElement("tr");
+//     tr.innerHTML=`<td>${op.id}</td><td>${op.name}<div class="label">${op.contact||''}</div></td><td>${op.tin}</td><td>${op.api_key}</td><td>${op.license}</td><td>${op.expiry}</td><td>${op.sla}</td><td>${agg.pspName}</td><td>${agg.pending.toFixed(2)}</td><td>${agg.paid.toFixed(2)}</td><td>${agg.risk}</td>`;
+//     tb.appendChild(tr);
+//   });
+// }
+
+function renderOperators() {
+  const tb = document.querySelector("#opTable tbody");
+  tb.innerHTML = "";
+
+  // Start with real operators
+  let ops = state.operators || [];
+
+  // Add sample entries if we need more data
+  const sampleOperators = [
+    {
+      id: 1001,
+      name: "Acme Bets",
+      contact: "Acme Contact +233-209897727",
+      tin: "P770909264",
+      api_key: "34cdc594cf66461cb4dc42e481534d74",
+      license: "valid",
+      expiry: "2028-01-28",
+      sla: "96.72%"
+    },
+    {
+      id: 1002,
+      name: "BetKing",
+      contact: "support@betking.com",
+      tin: "P889101234",
+      api_key: "12b4ac884fe14327b98d3c1fe234abcd",
+      license: "valid",
+      expiry: "2027-09-15",
+      sla: "98.25%"
+    },
+    {
+      id: 1003,
+      name: "LuckyWin",
+      contact: "+44 20 7946 1234",
+      tin: "P441223678",
+      api_key: "5f6bcd3210aa4987bb9ccabc765ef321",
+      license: "valid",
+      expiry: "2026-06-01",
+      sla: "95.50%"
+    },
+    {
+      id: 1004,
+      name: "MegaPlay",
+      contact: "help@megaplay.net",
+      tin: "P993214555",
+      api_key: "98bcfe0974ad4f1189de34cab654aa21",
+      license: "valid",
+      expiry: "2029-12-31",
+      sla: "97.80%"
+    },
+    {
+      id: 1005,
+      name: "JackpotPro",
+      contact: "+1 (555) 908-7766",
+      tin: "P552341909",
+      api_key: "11cc22dd33ee44ff5566aabb7788cc99",
+      license: "valid",
+      expiry: "2025-04-20",
+      sla: "94.60%"
+    },
+    {
+      id: 1006,
+      name: "GoldenChance",
+      contact: "info@goldenchance.com",
+      tin: "P667812234",
+      api_key: "a1b2c3d4e5f67890123456789abcdef0",
+      license: "valid",
+      expiry: "2026-08-14",
+      sla: "97.10%"
+    },
+    {
+      id: 1007,
+      name: "Prime Lotto",
+      contact: "support@primelotto.org",
+      tin: "P445566778",
+      api_key: "bbccddeeff00112233445566778899aa",
+      license: "valid",
+      expiry: "2027-10-05",
+      sla: "95.80%"
+    },
+    {
+      id: 1008,
+      name: "SuperWin",
+      contact: "+233 24 567 8901",
+      tin: "P998877665",
+      api_key: "1234abcd5678efgh9012ijkl3456mnop",
+      license: "valid",
+      expiry: "2028-02-18",
+      sla: "96.90%"
+    },
+    {
+      id: 1009,
+      name: "Royal Bets",
+      contact: "contact@royalbets.com",
+      tin: "P112233445",
+      api_key: "abcd1111efgh2222ijkl3333mnop4444",
+      license: "valid",
+      expiry: "2029-07-01",
+      sla: "98.40%"
+    },
+    {
+      id: 1010,
+      name: "NextGen Gaming",
+      contact: "support@nextgen.gg",
+      tin: "P223344556",
+      api_key: "ffeeddccbbaa00998877665544332211",
+      license: "valid",
+      expiry: "2026-12-25",
+      sla: "97.25%"
+    },
+    {
+      id: 1011,
+      name: "Victory Play",
+      contact: "help@victoryplay.net",
+      tin: "P334455667",
+      api_key: "9999aaaa8888bbbb7777cccc6666dddd",
+      license: "valid",
+      expiry: "2027-11-30",
+      sla: "96.00%"
+    },
+    {
+      id: 1012,
+      name: "DreamBet",
+      contact: "+1 (404) 555-1932",
+      tin: "P445566778",
+      api_key: "11112222333344445555666677778888",
+      license: "valid",
+      expiry: "2025-09-19",
+      sla: "95.75%"
+    },
+    {
+      id: 1013,
+      name: "UltraGaming",
+      contact: "contact@ultragaming.com",
+      tin: "P556677889",
+      api_key: "abcdefabcdefabcdefabcdefabcdef12",
+      license: "valid",
+      expiry: "2028-04-11",
+      sla: "97.90%"
+    },
+    {
+      id: 1014,
+      name: "Pinnacle Play",
+      contact: "helpdesk@pinnacleplay.net",
+      tin: "P667788990",
+      api_key: "1234567890abcdef1234567890abcdef",
+      license: "valid",
+      expiry: "2029-03-20",
+      sla: "96.85%"
+    },
+    {
+      id: 1015,
+      name: "Elite Bets",
+      contact: "+44 161 555 7788",
+      tin: "P778899001",
+      api_key: "deadbeefcafebabefeedface12345678",
+      license: "valid",
+      expiry: "2027-01-07",
+      sla: "98.10%"
+    }
+  ];
+
+  if (ops.length < 15) {
+    ops = [...ops, ...sampleOperators];
+  }
+
+  // Filter for operator role
+  if (persona.role === "OPERATOR") {
+    ops = ops.filter(o => o.id === persona.opId);
+  }
+
+  // Render rows
+  ops.forEach(op => {
+    const agg = opAgg(op.id) || { 
+      pspName: "N/A", 
+      pending: 0, 
+      paid: 0, 
+      risk: "N/A" 
+    };
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${op.id}</td>
+      <td>${op.name}<div class="label">${op.contact || ""}</div></td>
+      <td>${op.tin}</td>
+      <td>${op.api_key}</td>
+      <td>${op.license}</td>
+      <td>${op.expiry}</td>
+      <td>${op.sla}</td>
+      <td>${agg.pspName}</td>
+      <td>${agg.pending.toFixed(2)}</td>
+      <td>${agg.paid.toFixed(2)}</td>
+      <td>${agg.risk}</td>
+    `;
     tb.appendChild(tr);
   });
 }
 
+// function renderPSP(){
+//   const opSel=document.getElementById("pspMapOp"); opSel.innerHTML="";
+//   state.operators.forEach(o=>{ const e=document.createElement("option"); e.value=o.id; e.textContent=`#${o.id} ${o.name}`; opSel.appendChild(e); });
+//   const pspSel=document.getElementById("pspMap"); pspSel.innerHTML="";
+//   state.psps.forEach(p=>{ const e=document.createElement("option"); e.value=p.id; e.textContent=`#${p.id} ${p.name}`; pspSel.appendChild(e); });
+//   const tb=document.querySelector("#pspTable tbody"); tb.innerHTML="";
+//   let rows=state.psps;
+//   if(persona.role==="OPERATOR"){ rows = rows.filter(p=> state.operators.find(o=>o.id===persona.opId)?.psp_id === p.id ); }
+//   rows.forEach(psp=>{
+//     const ops=state.operators.filter(o=>o.psp_id===psp.id).map(o=>`#${o.id}`).join(", ");
+//     const tr=document.createElement("tr");
+//     tr.innerHTML=`<td>${psp.id}</td><td>${psp.name}</td><td>${psp.switch_id} / ${psp.bin}</td><td>${psp.sla_target}</td><td>${psp.status}</td><td>${ops||"—"}</td>`;
+//     tb.appendChild(tr);
+//   });
+// }
+
 function renderPSP(){
-  const opSel=document.getElementById("pspMapOp"); opSel.innerHTML="";
-  state.operators.forEach(o=>{ const e=document.createElement("option"); e.value=o.id; e.textContent=`#${o.id} ${o.name}`; opSel.appendChild(e); });
-  const pspSel=document.getElementById("pspMap"); pspSel.innerHTML="";
-  state.psps.forEach(p=>{ const e=document.createElement("option"); e.value=p.id; e.textContent=`#${p.id} ${p.name}`; pspSel.appendChild(e); });
-  const tb=document.querySelector("#pspTable tbody"); tb.innerHTML="";
-  let rows=state.psps;
-  if(persona.role==="OPERATOR"){ rows = rows.filter(p=> state.operators.find(o=>o.id===persona.opId)?.psp_id === p.id ); }
-  rows.forEach(psp=>{
-    const ops=state.operators.filter(o=>o.psp_id===psp.id).map(o=>`#${o.id}`).join(", ");
-    const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${psp.id}</td><td>${psp.name}</td><td>${psp.switch_id} / ${psp.bin}</td><td>${psp.sla_target}</td><td>${psp.status}</td><td>${ops||"—"}</td>`;
-    tb.appendChild(tr);
-  });
+  // Sample PSPs data - IDs now start from a higher number
+  const samplePSPs = [
+    {
+      id: 101, // Changed to a higher number
+      name: "GlobalPay Gateway",
+      switch_id: "GP-001",
+      bin: "424242",
+      sla_target: "99.5%",
+      status: "ACTIVE"
+    },
+    {
+      id: 102, // Changed to a higher number
+      name: "SecureTrans Network",
+      switch_id: "STN-002",
+      bin: "555555",
+      sla_target: "99.8%",
+      status: "ACTIVE"
+    },
+    {
+      id: 103, // Changed to a higher number
+      name: "PayFast Solutions",
+      switch_id: "PFS-003",
+      bin: "444444",
+      sla_target: "99.2%",
+      status: "MAINTENANCE"
+    },
+    {
+      id: 104, // Changed to a higher number
+      name: "MegaCard Processor",
+      switch_id: "MCP-004",
+      bin: "400000",
+      sla_target: "99.9%",
+      status: "ACTIVE"
+    },
+    {
+      id: 105, // Changed to a higher number
+      name: "FlexiPay Gateway",
+      switch_id: "FPG-005",
+      bin: "378282",
+      sla_target: "99.3%",
+      status: "INACTIVE"
+    },
+    {
+      id: 106, // Changed to a higher number
+      name: "TrustCard Network",
+      switch_id: "TCN-006",
+      bin: "371449",
+      sla_target: "99.7%",
+      status: "ACTIVE"
+    },
+    {
+      id: 107, // Changed to a higher number
+      name: "SwiftPay Hub",
+      switch_id: "SPH-007",
+      bin: "601100",
+      sla_target: "99.4%",
+      status: "ACTIVE"
+    },
+    {
+      id: 108, // Changed to a higher number
+      name: "ReliableTransfer Co",
+      switch_id: "RTC-008",
+      bin: "340000",
+      sla_target: "99.6%",
+      status: "TESTING"
+    },
+    {
+      id: 109, // Changed to a higher number
+      name: "UltraProcess Gateway",
+      switch_id: "UPG-009",
+      bin: "30569",
+      sla_target: "99.1%",
+      status: "ACTIVE"
+    },
+    {
+      id: 110, // Changed to a higher number
+      name: "PremiumPay Network",
+      switch_id: "PPN-010",
+      bin: "38520",
+      sla_target: "99.8%",
+      status: "ACTIVE"
+    }
+  ];
+
+  // Sample operators data - IDs now start from a higher number, psp_id matches numeric PSP IDs
+  const sampleOperators = [
+    {
+      id: 1001, // Changed to a higher number
+      name: "Metro Mobile",
+      psp_id: 101 // Matches updated PSP ID
+    },
+    {
+      id: 1002, // Changed to a higher number
+      name: "CityTel Services",
+      psp_id: 102 // Matches updated PSP ID
+    },
+    {
+      id: 1003, // Changed to a higher number
+      name: "QuickConnect Ltd",
+      psp_id: 101 // Matches updated PSP ID
+    },
+    {
+      id: 1004, // Changed to a higher number
+      name: "DataLink Communications",
+      psp_id: 103 // Matches updated PSP ID
+    },
+    {
+      id: 1005, // Changed to a higher number
+      name: "NetSpeed Solutions",
+      psp_id: 104 // Matches updated PSP ID
+    },
+    {
+      id: 1006, // Changed to a higher number
+      name: "AlphaNet Corp",
+      psp_id: 102 // Matches updated PSP ID
+    },
+    {
+      id: 1007, // Changed to a higher number
+      name: "BetaComm Industries",
+      psp_id: 105 // Matches updated PSP ID
+    },
+    {
+      id: 1008, // Changed to a higher number
+      name: "GammaLink Services",
+      psp_id: 106 // Matches updated PSP ID
+    },
+    {
+      id: 1009, // Changed to a higher number
+      name: "DeltaTech Network",
+      psp_id: 107 // Matches updated PSP ID
+    },
+    {
+      id: 1010, // Changed to a higher number
+      name: "EpsilonMobile Ltd",
+      psp_id: 101 // Matches updated PSP ID
+    },
+    {
+      id: 1011, // Changed to a higher number
+      name: "ZetaConnect Inc",
+      psp_id: 108 // Matches updated PSP ID
+    },
+    {
+      id: 1012, // Changed to a higher number
+      name: "ThetaComm Solutions",
+      psp_id: 104 // Matches updated PSP ID
+    },
+    {
+      id: 1013, // Changed to a higher number
+      name: "IoTel Services",
+      psp_id: 109 // Matches updated PSP ID
+    },
+    {
+      id: 1014, // Changed to a higher number
+      name: "KappaNet Corp",
+      psp_id: 106 // Matches updated PSP ID
+    },
+    {
+      id: 1015, // Changed to a higher number
+      name: "LambdaLink Ltd",
+      psp_id: 110 // Matches updated PSP ID
+    }
+  ];
+
+  // Combine real data with sample data
+  let allOperators = [...(state.operators || [])];
+  let allPSPs = [...(state.psps || [])];
+
+  // Add sample data if we don't have enough real data
+  if (allOperators.length < 15) {
+    // Filter out existing IDs to avoid duplicates if state.operators already has some sample-like data
+    const existingOpIds = new Set(allOperators.map(op => op.id));
+    const uniqueSampleOperators = sampleOperators.filter(op => !existingOpIds.has(op.id));
+    allOperators = [...allOperators, ...uniqueSampleOperators];
+  }
+
+  if (allPSPs.length < 10) {
+    // Filter out existing IDs to avoid duplicates if state.psps already has some sample-like data
+    const existingPspIds = new Set(allPSPs.map(psp => psp.id));
+    const uniqueSamplePSPs = samplePSPs.filter(psp => !existingPspIds.has(psp.id));
+    allPSPs = [...allPSPs, ...uniqueSamplePSPs];
+  }
+
+  // Update state with combined data for this render
+  const currentOperators = allOperators;
+  const currentPSPs = allPSPs;
+
+  // Populate operator dropdown
+  const opSel = document.getElementById("pspMapOp");
+  if (opSel) { // Added check for element existence
+    opSel.innerHTML = "";
+    currentOperators.forEach(o => {
+      const e = document.createElement("option");
+      e.value = o.id; // Value is numeric ID
+      e.textContent = `#${o.id} ${o.name}`; // Removed "OP" prefix
+      opSel.appendChild(e);
+    });
+  }
+
+  // Populate PSP dropdown
+  const pspSel = document.getElementById("pspMap");
+  if (pspSel) { // Added check for element existence
+    pspSel.innerHTML = "";
+    currentPSPs.forEach(p => {
+      const e = document.createElement("option");
+      e.value = p.id; // Value is numeric ID
+      e.textContent = `#${p.id} ${p.name}`; // Removed "PSP" prefix
+      pspSel.appendChild(e);
+    });
+  }
+
+  // Render PSP table
+  const tb = document.querySelector("#pspTable tbody");
+  if (tb) { // Added check for element existence
+    tb.innerHTML = "";
+    let rows = currentPSPs;
+
+    // Ensure persona and opId exist and are of the correct type for comparison
+    if (persona.role === "OPERATOR" && persona.opId !== undefined && typeof persona.opId === 'number') {
+      rows = rows.filter(p => {
+        const foundOperator = currentOperators.find(o => o.id === persona.opId);
+        return foundOperator && foundOperator.psp_id === p.id;
+      });
+    }
+
+    rows.forEach(psp => {
+      // Filter operators whose psp_id matches the current PSP's id (both are numbers)
+      const ops = currentOperators.filter(o => o.psp_id === psp.id)
+                                  .map(o => `#${o.id}`) // Removed "OP" prefix
+                                  .join(", ");
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${psp.id}</td>
+        <td>${psp.name}</td>
+        <td>${psp.switch_id} / ${psp.bin}</td>
+        <td>${psp.sla_target}</td>
+        <td>${psp.status}</td>
+        <td>${ops || "—"}</td>`;
+      tb.appendChild(tr);
+    });
+  }
 }
+
+
 function createPSP(){
   const id=state.seq.psp++;
   state.psps.push({
@@ -673,16 +1134,112 @@ function ledgerHead(){
   for(const r of rows){ prev = shaDemo(prev + JSON.stringify({id:r.id,op:r.operator_id,dir:r.direction,amt:r.amount,ref:r.ref,ts:r.created_at})); }
   return prev.slice(0,16);
 }
+// function renderSettlements(){
+//   const tb=document.querySelector("#settleTable tbody"); tb.innerHTML="";
+//   let rows=state.settlements;
+//   if(persona.role==="OPERATOR") rows = rows.filter(r=>r.operator_id===persona.opId);
+//   rows.slice(0,1000).forEach(s=>{
+//     const tr=document.createElement("tr");
+//     tr.innerHTML=`<td>${s.id}</td><td>${s.operator_id}</td><td>${s.amount.toFixed(2)}</td><td>${s.ref_bill_ids}</td><td>${s.status}</td><td>${s.created_at}</td><td>${s.swept_at||""}</td>`;
+//     tb.appendChild(tr);
+//   });
+// }
+
 function renderSettlements(){
-  const tb=document.querySelector("#settleTable tbody"); tb.innerHTML="";
+  const tb=document.querySelector("#settleTable tbody"); 
+  tb.innerHTML="";
+  
+  // Get actual settlements data
   let rows=state.settlements;
-  if(persona.role==="OPERATOR") rows = rows.filter(r=>r.operator_id===persona.opId);
-  rows.slice(0,400).forEach(s=>{
+  
+  // Sample settlement entries
+  const sampleSettlements = [
+     {
+      id: 101,
+      operator_id: 1,
+      amount: 150.75,
+      ref_bill_ids: "B-001, B-002",
+      status: "COMPLETED",
+      created_at: "2025-08-28T10:00:00Z",
+      swept_at: "2025-08-28T11:30:00Z",
+    },
+    {
+      id: 102,
+      operator_id: 2,
+      amount: 250.00,
+      ref_bill_ids: "B-003",
+      status: "PENDING",
+      created_at: "2025-08-28T10:05:00Z",
+      swept_at: null,
+    },
+    {
+      id: 103,
+      operator_id: 1,
+      amount: 75.50,
+      ref_bill_ids: "B-004, B-005",
+      status: "COMPLETED",
+      created_at: "2025-08-28T10:15:00Z",
+      swept_at: "2025-08-28T12:00:00Z",
+    },
+    {
+      id: 104,
+      operator_id: 3,
+      amount: 320.25,
+      ref_bill_ids: "B-006",
+      status: "COMPLETED",
+      created_at: "2025-08-28T10:20:00Z",
+      swept_at: "2025-08-28T12:15:00Z",
+    },
+    {
+      id: 105,
+      operator_id: 2,
+      amount: 50.00,
+      ref_bill_ids: "B-007",
+      status: "FAILED",
+      created_at: "2025-08-28T10:25:00Z",
+      swept_at: null,
+    },
+    {
+      id: 106,
+      operator_id: 1,
+      amount: 99.99,
+      ref_bill_ids: "B-008",
+      status: "PENDING",
+      created_at: "2025-08-28T10:30:00Z",
+      swept_at: null,
+    },
+    {
+      id: 107,
+      operator_id: 3,
+      amount: 180.10,
+      ref_bill_ids: "B-009, B-010",
+      status: "COMPLETED",
+      created_at: "2025-08-28T10:35:00Z",
+      swept_at: "2025-08-28T12:30:00Z",
+    }
+  ];
+  
+  // Combine real data with sample data
+  let allRows = [...rows];
+  
+  // Add sample entries if we don't have enough real data
+  if (allRows.length < 20) {
+    allRows = [...allRows, ...sampleSettlements];
+  }
+  
+  // Apply operator filter to combined data if needed
+  if(persona.role==="OPERATOR") {
+    allRows = allRows.filter(r=>r.operator_id===persona.opId);
+  }
+  
+  // Render up to 400 entries
+  allRows.slice(0,400).forEach(s=>{
     const tr=document.createElement("tr");
     tr.innerHTML=`<td>${s.id}</td><td>${s.operator_id}</td><td>${s.amount.toFixed(2)}</td><td>${s.ref_bill_ids}</td><td>${s.status}</td><td>${s.created_at}</td><td>${s.swept_at||""}</td>`;
     tb.appendChild(tr);
   });
 }
+
 function renderFund(){
   const tb=document.querySelector("#fundTable tbody"); tb.innerHTML="";
   let rows = state.fund_ledger;
@@ -704,11 +1261,164 @@ function findUnusedTopupBills(){
   const unused=tops.filter(isUnused);
   return unused.map(top=> state.tax_bills.find(b=>b.tx_id===top.id)).filter(Boolean);
 }
+// function renderRecon(){
+//   const tb=document.querySelector("#reconTable tbody"); tb.innerHTML="";
+//   let unused=findUnusedTopupBills();
+//   if(persona.role==="OPERATOR") unused = unused.filter(u=>u.operator_id===persona.opId);
+//   unused.slice(0,300).forEach(u=>{
+//     const tr=document.createElement("tr");
+//     tr.innerHTML=`<td>REQ-${u.id}</td><td>${u.operator_id}</td><td>${u.id}</td><td>${u.base.toFixed(2)}</td><td>${u.amount.toFixed(2)}</td><td>${u.status==="PAID"?"ELIGIBLE_REFUND":"CREDITABLE"}</td><td>${u.created_at}</td>`;
+//     tb.appendChild(tr);
+//   });
+// }
+
 function renderRecon(){
-  const tb=document.querySelector("#reconTable tbody"); tb.innerHTML="";
+  const tb=document.querySelector("#reconTable tbody"); 
+  tb.innerHTML="";
+  
+  // Get actual unused topup bills
   let unused=findUnusedTopupBills();
   if(persona.role==="OPERATOR") unused = unused.filter(u=>u.operator_id===persona.opId);
-  unused.slice(0,300).forEach(u=>{
+  
+  // Add sample entries if we need more data for testing/demo
+  const sampleEntries = [
+    {
+      id: 12001,
+      operator_id: "1",
+      base: 95.50,
+      amount: 100.00,
+      status: "PAID",
+      created_at: "2024-08-29 10:15:30"
+    },
+    {
+      id: 12002,
+      operator_id: "2", 
+      base: 47.25,
+      amount: 50.00,
+      status: "PENDING",
+      created_at: "2024-08-29 11:22:15"
+    },
+    {
+      id: 12003,
+      operator_id: "1",
+      base: 190.00,
+      amount: 200.00,
+      status: "PAID",
+      created_at: "2024-08-29 09:45:22"
+    },
+    {
+      id: 12004,
+      operator_id: "3",
+      base: 23.75,
+      amount: 25.00,
+      status: "PENDING",
+      created_at: "2024-08-29 14:33:18"
+    },
+    {
+      id: 12005,
+      operator_id: "2",
+      base: 475.20,
+      amount: 500.00,
+      status: "PAID",
+      created_at: "2024-08-29 08:12:45"
+    },
+    {
+      id: 12006,
+      operator_id: "4",
+      base: 142.85,
+      amount: 150.00,
+      status: "PENDING",
+      created_at: "2024-08-29 13:55:33"
+    },
+    {
+      id: 12007,
+      operator_id: "1",
+      base: 71.40,
+      amount: 75.00,
+      status: "PAID",
+      created_at: "2024-08-29 16:20:12"
+    },
+    {
+      id: 12008,
+      operator_id: "5",
+      base: 285.60,
+      amount: 300.00,
+      status: "PENDING",
+      created_at: "2024-08-29 12:08:27"
+    },
+    {
+      id: 12009,
+      operator_id: "3",
+      base: 9.50,
+      amount: 10.00,
+      status: "PAID",
+      created_at: "2024-08-29 15:42:19"
+    },
+    {
+      id: 12010,
+      operator_id: "2",
+      base: 380.25,
+      amount: 400.00,
+      status: "PENDING",
+      created_at: "2024-08-29 07:30:55"
+    },
+    {
+      id: 12011,
+      operator_id: "4",
+      base: 57.15,
+      amount: 60.00,
+      status: "PAID",
+      created_at: "2024-08-28 18:25:41"
+    },
+    {
+      id: 12012,
+      operator_id: "1",
+      base: 214.75,
+      amount: 225.00,
+      status: "PENDING",
+      created_at: "2024-08-28 20:15:33"
+    },
+    {
+      id: 12013,
+      operator_id: "5",
+      base: 114.30,
+      amount: 120.00,
+      status: "PAID",
+      created_at: "2024-08-28 17:52:28"
+    },
+    {
+      id: 12014,
+      operator_id: "3",
+      base: 428.90,
+      amount: 450.00,
+      status: "PENDING",
+      created_at: "2024-08-28 19:33:16"
+    },
+    {
+      id: 12015,
+      operator_id: "2",
+      base: 166.65,
+      amount: 175.00,
+      status: "PAID",
+      created_at: "2024-08-28 21:18:52"
+    }
+  ];
+  
+  // Combine real data with sample data
+  let allEntries = [...unused];
+  
+  // Add sample entries if we don't have enough real data
+  if (allEntries.length < 15) {
+    allEntries = [...allEntries, ...sampleEntries];
+  }
+  
+  // Apply operator filter to combined data if needed
+  if(persona.role==="OPERATOR") {
+    allEntries = allEntries.filter(u=>u.operator_id===persona.opId);
+  }
+  
+  // Render up to 300 entries
+  allEntries.slice(0,300).forEach(u=>{
     const tr=document.createElement("tr");
     tr.innerHTML=`<td>REQ-${u.id}</td><td>${u.operator_id}</td><td>${u.id}</td><td>${u.base.toFixed(2)}</td><td>${u.amount.toFixed(2)}</td><td>${u.status==="PAID"?"ELIGIBLE_REFUND":"CREDITABLE"}</td><td>${u.created_at}</td>`;
     tb.appendChild(tr);
