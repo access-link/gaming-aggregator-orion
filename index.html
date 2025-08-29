@@ -516,21 +516,266 @@ function renderOperators(){
   });
 }
 
+// function renderPSP(){
+//   const opSel=document.getElementById("pspMapOp"); opSel.innerHTML="";
+//   state.operators.forEach(o=>{ const e=document.createElement("option"); e.value=o.id; e.textContent=`#${o.id} ${o.name}`; opSel.appendChild(e); });
+//   const pspSel=document.getElementById("pspMap"); pspSel.innerHTML="";
+//   state.psps.forEach(p=>{ const e=document.createElement("option"); e.value=p.id; e.textContent=`#${p.id} ${p.name}`; pspSel.appendChild(e); });
+//   const tb=document.querySelector("#pspTable tbody"); tb.innerHTML="";
+//   let rows=state.psps;
+//   if(persona.role==="OPERATOR"){ rows = rows.filter(p=> state.operators.find(o=>o.id===persona.opId)?.psp_id === p.id ); }
+//   rows.forEach(psp=>{
+//     const ops=state.operators.filter(o=>o.psp_id===psp.id).map(o=>`#${o.id}`).join(", ");
+//     const tr=document.createElement("tr");
+//     tr.innerHTML=`<td>${psp.id}</td><td>${psp.name}</td><td>${psp.switch_id} / ${psp.bin}</td><td>${psp.sla_target}</td><td>${psp.status}</td><td>${ops||"—"}</td>`;
+//     tb.appendChild(tr);
+//   });
+// }
+
 function renderPSP(){
-  const opSel=document.getElementById("pspMapOp"); opSel.innerHTML="";
-  state.operators.forEach(o=>{ const e=document.createElement("option"); e.value=o.id; e.textContent=`#${o.id} ${o.name}`; opSel.appendChild(e); });
-  const pspSel=document.getElementById("pspMap"); pspSel.innerHTML="";
-  state.psps.forEach(p=>{ const e=document.createElement("option"); e.value=p.id; e.textContent=`#${p.id} ${p.name}`; pspSel.appendChild(e); });
-  const tb=document.querySelector("#pspTable tbody"); tb.innerHTML="";
-  let rows=state.psps;
-  if(persona.role==="OPERATOR"){ rows = rows.filter(p=> state.operators.find(o=>o.id===persona.opId)?.psp_id === p.id ); }
-  rows.forEach(psp=>{
-    const ops=state.operators.filter(o=>o.psp_id===psp.id).map(o=>`#${o.id}`).join(", ");
-    const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${psp.id}</td><td>${psp.name}</td><td>${psp.switch_id} / ${psp.bin}</td><td>${psp.sla_target}</td><td>${psp.status}</td><td>${ops||"—"}</td>`;
-    tb.appendChild(tr);
-  });
+  // Sample PSPs data - IDs now start from a higher number
+  const samplePSPs = [
+    {
+      id: 101, // Changed to a higher number
+      name: "GlobalPay Gateway",
+      switch_id: "GP-001",
+      bin: "424242",
+      sla_target: "99.5%",
+      status: "ACTIVE"
+    },
+    {
+      id: 102, // Changed to a higher number
+      name: "SecureTrans Network",
+      switch_id: "STN-002",
+      bin: "555555",
+      sla_target: "99.8%",
+      status: "ACTIVE"
+    },
+    {
+      id: 103, // Changed to a higher number
+      name: "PayFast Solutions",
+      switch_id: "PFS-003",
+      bin: "444444",
+      sla_target: "99.2%",
+      status: "MAINTENANCE"
+    },
+    {
+      id: 104, // Changed to a higher number
+      name: "MegaCard Processor",
+      switch_id: "MCP-004",
+      bin: "400000",
+      sla_target: "99.9%",
+      status: "ACTIVE"
+    },
+    {
+      id: 105, // Changed to a higher number
+      name: "FlexiPay Gateway",
+      switch_id: "FPG-005",
+      bin: "378282",
+      sla_target: "99.3%",
+      status: "INACTIVE"
+    },
+    {
+      id: 106, // Changed to a higher number
+      name: "TrustCard Network",
+      switch_id: "TCN-006",
+      bin: "371449",
+      sla_target: "99.7%",
+      status: "ACTIVE"
+    },
+    {
+      id: 107, // Changed to a higher number
+      name: "SwiftPay Hub",
+      switch_id: "SPH-007",
+      bin: "601100",
+      sla_target: "99.4%",
+      status: "ACTIVE"
+    },
+    {
+      id: 108, // Changed to a higher number
+      name: "ReliableTransfer Co",
+      switch_id: "RTC-008",
+      bin: "340000",
+      sla_target: "99.6%",
+      status: "TESTING"
+    },
+    {
+      id: 109, // Changed to a higher number
+      name: "UltraProcess Gateway",
+      switch_id: "UPG-009",
+      bin: "30569",
+      sla_target: "99.1%",
+      status: "ACTIVE"
+    },
+    {
+      id: 110, // Changed to a higher number
+      name: "PremiumPay Network",
+      switch_id: "PPN-010",
+      bin: "38520",
+      sla_target: "99.8%",
+      status: "ACTIVE"
+    }
+  ];
+
+  // Sample operators data - IDs now start from a higher number, psp_id matches numeric PSP IDs
+  const sampleOperators = [
+    {
+      id: 1001, // Changed to a higher number
+      name: "Metro Mobile",
+      psp_id: 101 // Matches updated PSP ID
+    },
+    {
+      id: 1002, // Changed to a higher number
+      name: "CityTel Services",
+      psp_id: 102 // Matches updated PSP ID
+    },
+    {
+      id: 1003, // Changed to a higher number
+      name: "QuickConnect Ltd",
+      psp_id: 101 // Matches updated PSP ID
+    },
+    {
+      id: 1004, // Changed to a higher number
+      name: "DataLink Communications",
+      psp_id: 103 // Matches updated PSP ID
+    },
+    {
+      id: 1005, // Changed to a higher number
+      name: "NetSpeed Solutions",
+      psp_id: 104 // Matches updated PSP ID
+    },
+    {
+      id: 1006, // Changed to a higher number
+      name: "AlphaNet Corp",
+      psp_id: 102 // Matches updated PSP ID
+    },
+    {
+      id: 1007, // Changed to a higher number
+      name: "BetaComm Industries",
+      psp_id: 105 // Matches updated PSP ID
+    },
+    {
+      id: 1008, // Changed to a higher number
+      name: "GammaLink Services",
+      psp_id: 106 // Matches updated PSP ID
+    },
+    {
+      id: 1009, // Changed to a higher number
+      name: "DeltaTech Network",
+      psp_id: 107 // Matches updated PSP ID
+    },
+    {
+      id: 1010, // Changed to a higher number
+      name: "EpsilonMobile Ltd",
+      psp_id: 101 // Matches updated PSP ID
+    },
+    {
+      id: 1011, // Changed to a higher number
+      name: "ZetaConnect Inc",
+      psp_id: 108 // Matches updated PSP ID
+    },
+    {
+      id: 1012, // Changed to a higher number
+      name: "ThetaComm Solutions",
+      psp_id: 104 // Matches updated PSP ID
+    },
+    {
+      id: 1013, // Changed to a higher number
+      name: "IoTel Services",
+      psp_id: 109 // Matches updated PSP ID
+    },
+    {
+      id: 1014, // Changed to a higher number
+      name: "KappaNet Corp",
+      psp_id: 106 // Matches updated PSP ID
+    },
+    {
+      id: 1015, // Changed to a higher number
+      name: "LambdaLink Ltd",
+      psp_id: 110 // Matches updated PSP ID
+    }
+  ];
+
+  // Combine real data with sample data
+  let allOperators = [...(state.operators || [])];
+  let allPSPs = [...(state.psps || [])];
+
+  // Add sample data if we don't have enough real data
+  if (allOperators.length < 15) {
+    // Filter out existing IDs to avoid duplicates if state.operators already has some sample-like data
+    const existingOpIds = new Set(allOperators.map(op => op.id));
+    const uniqueSampleOperators = sampleOperators.filter(op => !existingOpIds.has(op.id));
+    allOperators = [...allOperators, ...uniqueSampleOperators];
+  }
+
+  if (allPSPs.length < 10) {
+    // Filter out existing IDs to avoid duplicates if state.psps already has some sample-like data
+    const existingPspIds = new Set(allPSPs.map(psp => psp.id));
+    const uniqueSamplePSPs = samplePSPs.filter(psp => !existingPspIds.has(psp.id));
+    allPSPs = [...allPSPs, ...uniqueSamplePSPs];
+  }
+
+  // Update state with combined data for this render
+  const currentOperators = allOperators;
+  const currentPSPs = allPSPs;
+
+  // Populate operator dropdown
+  const opSel = document.getElementById("pspMapOp");
+  if (opSel) { // Added check for element existence
+    opSel.innerHTML = "";
+    currentOperators.forEach(o => {
+      const e = document.createElement("option");
+      e.value = o.id; // Value is numeric ID
+      e.textContent = `#${o.id} ${o.name}`; // Removed "OP" prefix
+      opSel.appendChild(e);
+    });
+  }
+
+  // Populate PSP dropdown
+  const pspSel = document.getElementById("pspMap");
+  if (pspSel) { // Added check for element existence
+    pspSel.innerHTML = "";
+    currentPSPs.forEach(p => {
+      const e = document.createElement("option");
+      e.value = p.id; // Value is numeric ID
+      e.textContent = `#${p.id} ${p.name}`; // Removed "PSP" prefix
+      pspSel.appendChild(e);
+    });
+  }
+
+  // Render PSP table
+  const tb = document.querySelector("#pspTable tbody");
+  if (tb) { // Added check for element existence
+    tb.innerHTML = "";
+    let rows = currentPSPs;
+
+    // Ensure persona and opId exist and are of the correct type for comparison
+    if (persona.role === "OPERATOR" && persona.opId !== undefined && typeof persona.opId === 'number') {
+      rows = rows.filter(p => {
+        const foundOperator = currentOperators.find(o => o.id === persona.opId);
+        return foundOperator && foundOperator.psp_id === p.id;
+      });
+    }
+
+    rows.forEach(psp => {
+      // Filter operators whose psp_id matches the current PSP's id (both are numbers)
+      const ops = currentOperators.filter(o => o.psp_id === psp.id)
+                                  .map(o => `#${o.id}`) // Removed "OP" prefix
+                                  .join(", ");
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${psp.id}</td>
+        <td>${psp.name}</td>
+        <td>${psp.switch_id} / ${psp.bin}</td>
+        <td>${psp.sla_target}</td>
+        <td>${psp.status}</td>
+        <td>${ops || "—"}</td>`;
+      tb.appendChild(tr);
+    });
+  }
 }
+
+
 function createPSP(){
   const id=state.seq.psp++;
   state.psps.push({
@@ -673,16 +918,112 @@ function ledgerHead(){
   for(const r of rows){ prev = shaDemo(prev + JSON.stringify({id:r.id,op:r.operator_id,dir:r.direction,amt:r.amount,ref:r.ref,ts:r.created_at})); }
   return prev.slice(0,16);
 }
+// function renderSettlements(){
+//   const tb=document.querySelector("#settleTable tbody"); tb.innerHTML="";
+//   let rows=state.settlements;
+//   if(persona.role==="OPERATOR") rows = rows.filter(r=>r.operator_id===persona.opId);
+//   rows.slice(0,1000).forEach(s=>{
+//     const tr=document.createElement("tr");
+//     tr.innerHTML=`<td>${s.id}</td><td>${s.operator_id}</td><td>${s.amount.toFixed(2)}</td><td>${s.ref_bill_ids}</td><td>${s.status}</td><td>${s.created_at}</td><td>${s.swept_at||""}</td>`;
+//     tb.appendChild(tr);
+//   });
+// }
+
 function renderSettlements(){
-  const tb=document.querySelector("#settleTable tbody"); tb.innerHTML="";
+  const tb=document.querySelector("#settleTable tbody"); 
+  tb.innerHTML="";
+  
+  // Get actual settlements data
   let rows=state.settlements;
-  if(persona.role==="OPERATOR") rows = rows.filter(r=>r.operator_id===persona.opId);
-  rows.slice(0,400).forEach(s=>{
+  
+  // Sample settlement entries
+  const sampleSettlements = [
+     {
+      id: 101,
+      operator_id: 1,
+      amount: 150.75,
+      ref_bill_ids: "B-001, B-002",
+      status: "COMPLETED",
+      created_at: "2025-08-28T10:00:00Z",
+      swept_at: "2025-08-28T11:30:00Z",
+    },
+    {
+      id: 102,
+      operator_id: 2,
+      amount: 250.00,
+      ref_bill_ids: "B-003",
+      status: "PENDING",
+      created_at: "2025-08-28T10:05:00Z",
+      swept_at: null,
+    },
+    {
+      id: 103,
+      operator_id: 1,
+      amount: 75.50,
+      ref_bill_ids: "B-004, B-005",
+      status: "COMPLETED",
+      created_at: "2025-08-28T10:15:00Z",
+      swept_at: "2025-08-28T12:00:00Z",
+    },
+    {
+      id: 104,
+      operator_id: 3,
+      amount: 320.25,
+      ref_bill_ids: "B-006",
+      status: "COMPLETED",
+      created_at: "2025-08-28T10:20:00Z",
+      swept_at: "2025-08-28T12:15:00Z",
+    },
+    {
+      id: 105,
+      operator_id: 2,
+      amount: 50.00,
+      ref_bill_ids: "B-007",
+      status: "FAILED",
+      created_at: "2025-08-28T10:25:00Z",
+      swept_at: null,
+    },
+    {
+      id: 106,
+      operator_id: 1,
+      amount: 99.99,
+      ref_bill_ids: "B-008",
+      status: "PENDING",
+      created_at: "2025-08-28T10:30:00Z",
+      swept_at: null,
+    },
+    {
+      id: 107,
+      operator_id: 3,
+      amount: 180.10,
+      ref_bill_ids: "B-009, B-010",
+      status: "COMPLETED",
+      created_at: "2025-08-28T10:35:00Z",
+      swept_at: "2025-08-28T12:30:00Z",
+    }
+  ];
+  
+  // Combine real data with sample data
+  let allRows = [...rows];
+  
+  // Add sample entries if we don't have enough real data
+  if (allRows.length < 20) {
+    allRows = [...allRows, ...sampleSettlements];
+  }
+  
+  // Apply operator filter to combined data if needed
+  if(persona.role==="OPERATOR") {
+    allRows = allRows.filter(r=>r.operator_id===persona.opId);
+  }
+  
+  // Render up to 400 entries
+  allRows.slice(0,400).forEach(s=>{
     const tr=document.createElement("tr");
     tr.innerHTML=`<td>${s.id}</td><td>${s.operator_id}</td><td>${s.amount.toFixed(2)}</td><td>${s.ref_bill_ids}</td><td>${s.status}</td><td>${s.created_at}</td><td>${s.swept_at||""}</td>`;
     tb.appendChild(tr);
   });
 }
+
 function renderFund(){
   const tb=document.querySelector("#fundTable tbody"); tb.innerHTML="";
   let rows = state.fund_ledger;
@@ -704,11 +1045,164 @@ function findUnusedTopupBills(){
   const unused=tops.filter(isUnused);
   return unused.map(top=> state.tax_bills.find(b=>b.tx_id===top.id)).filter(Boolean);
 }
+// function renderRecon(){
+//   const tb=document.querySelector("#reconTable tbody"); tb.innerHTML="";
+//   let unused=findUnusedTopupBills();
+//   if(persona.role==="OPERATOR") unused = unused.filter(u=>u.operator_id===persona.opId);
+//   unused.slice(0,300).forEach(u=>{
+//     const tr=document.createElement("tr");
+//     tr.innerHTML=`<td>REQ-${u.id}</td><td>${u.operator_id}</td><td>${u.id}</td><td>${u.base.toFixed(2)}</td><td>${u.amount.toFixed(2)}</td><td>${u.status==="PAID"?"ELIGIBLE_REFUND":"CREDITABLE"}</td><td>${u.created_at}</td>`;
+//     tb.appendChild(tr);
+//   });
+// }
+
 function renderRecon(){
-  const tb=document.querySelector("#reconTable tbody"); tb.innerHTML="";
+  const tb=document.querySelector("#reconTable tbody"); 
+  tb.innerHTML="";
+  
+  // Get actual unused topup bills
   let unused=findUnusedTopupBills();
   if(persona.role==="OPERATOR") unused = unused.filter(u=>u.operator_id===persona.opId);
-  unused.slice(0,300).forEach(u=>{
+  
+  // Add sample entries if we need more data for testing/demo
+  const sampleEntries = [
+    {
+      id: 12001,
+      operator_id: "OP001",
+      base: 95.50,
+      amount: 100.00,
+      status: "PAID",
+      created_at: "2024-08-29 10:15:30"
+    },
+    {
+      id: 12002,
+      operator_id: "OP002", 
+      base: 47.25,
+      amount: 50.00,
+      status: "PENDING",
+      created_at: "2024-08-29 11:22:15"
+    },
+    {
+      id: 12003,
+      operator_id: "OP001",
+      base: 190.00,
+      amount: 200.00,
+      status: "PAID",
+      created_at: "2024-08-29 09:45:22"
+    },
+    {
+      id: 12004,
+      operator_id: "OP003",
+      base: 23.75,
+      amount: 25.00,
+      status: "PENDING",
+      created_at: "2024-08-29 14:33:18"
+    },
+    {
+      id: 12005,
+      operator_id: "OP002",
+      base: 475.20,
+      amount: 500.00,
+      status: "PAID",
+      created_at: "2024-08-29 08:12:45"
+    },
+    {
+      id: 12006,
+      operator_id: "OP004",
+      base: 142.85,
+      amount: 150.00,
+      status: "PENDING",
+      created_at: "2024-08-29 13:55:33"
+    },
+    {
+      id: 12007,
+      operator_id: "OP001",
+      base: 71.40,
+      amount: 75.00,
+      status: "PAID",
+      created_at: "2024-08-29 16:20:12"
+    },
+    {
+      id: 12008,
+      operator_id: "OP005",
+      base: 285.60,
+      amount: 300.00,
+      status: "PENDING",
+      created_at: "2024-08-29 12:08:27"
+    },
+    {
+      id: 12009,
+      operator_id: "OP003",
+      base: 9.50,
+      amount: 10.00,
+      status: "PAID",
+      created_at: "2024-08-29 15:42:19"
+    },
+    {
+      id: 12010,
+      operator_id: "OP002",
+      base: 380.25,
+      amount: 400.00,
+      status: "PENDING",
+      created_at: "2024-08-29 07:30:55"
+    },
+    {
+      id: 12011,
+      operator_id: "OP004",
+      base: 57.15,
+      amount: 60.00,
+      status: "PAID",
+      created_at: "2024-08-28 18:25:41"
+    },
+    {
+      id: 12012,
+      operator_id: "OP001",
+      base: 214.75,
+      amount: 225.00,
+      status: "PENDING",
+      created_at: "2024-08-28 20:15:33"
+    },
+    {
+      id: 12013,
+      operator_id: "OP005",
+      base: 114.30,
+      amount: 120.00,
+      status: "PAID",
+      created_at: "2024-08-28 17:52:28"
+    },
+    {
+      id: 12014,
+      operator_id: "OP003",
+      base: 428.90,
+      amount: 450.00,
+      status: "PENDING",
+      created_at: "2024-08-28 19:33:16"
+    },
+    {
+      id: 12015,
+      operator_id: "OP002",
+      base: 166.65,
+      amount: 175.00,
+      status: "PAID",
+      created_at: "2024-08-28 21:18:52"
+    }
+  ];
+  
+  // Combine real data with sample data
+  let allEntries = [...unused];
+  
+  // Add sample entries if we don't have enough real data
+  if (allEntries.length < 15) {
+    allEntries = [...allEntries, ...sampleEntries];
+  }
+  
+  // Apply operator filter to combined data if needed
+  if(persona.role==="OPERATOR") {
+    allEntries = allEntries.filter(u=>u.operator_id===persona.opId);
+  }
+  
+  // Render up to 300 entries
+  allEntries.slice(0,300).forEach(u=>{
     const tr=document.createElement("tr");
     tr.innerHTML=`<td>REQ-${u.id}</td><td>${u.operator_id}</td><td>${u.id}</td><td>${u.base.toFixed(2)}</td><td>${u.amount.toFixed(2)}</td><td>${u.status==="PAID"?"ELIGIBLE_REFUND":"CREDITABLE"}</td><td>${u.created_at}</td>`;
     tb.appendChild(tr);
