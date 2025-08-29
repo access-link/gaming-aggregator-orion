@@ -166,12 +166,12 @@ select[multiple]{height:100px}
     <span>Consolidated Fund</span>
   </div>
 
-  <div class="nav-item" onclick="tab('recon')">
+  <div class="nav-item" onclick="tab('recon')" >
     <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/ledger.png" alt="Reconciliation"/>
     <span>Reconciliation</span>
   </div>
 
-  <div class="nav-item" onclick="tab('portal')">
+  <div id="portalNav" class="nav-item" onclick="tab('portal')">
     <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/internet.png" alt="Portal"/>
     <span>Stakeholder Portal</span>
   </div>
@@ -432,6 +432,15 @@ function populateRoleControls(){
 function switchPersona(){
   persona.role=document.getElementById("roleSel").value;
   persona.opId=parseInt(document.getElementById("opSel").value||state.operators[0]?.id||1,10);
+  
+  // hide/show reconciliation tab depending on role
+    const portalNav = document.getElementById("portalNav");
+    if(persona.role === "ADMIN" || persona.role === "GAMING_COMMISSION"){
+      portalNav.style.display = "none";
+    } else {
+      portalNav.style.display = "block";
+    }
+
   populateRoleControls(); refreshAll();
 }
 function tab(id){
